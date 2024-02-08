@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <!-- <script src="script.js"></script> -->
+    <title>Servise_pro</title>
+</head>
+<body>
+   
+    
+    <div id="main" style="width: 100%; height:100%; background-color: rgba(247,252,254,1); filter: blur(4px);">
+        <div style="width:100%; height: 60px; background-color: rgb(252, 252, 252); font-family:cursive; font-weight: 400; font-size: 30px; padding-top: 10px;">
+            <span style="color: blue; ">.</span>Servise Provider
+            <button onclick="logout()" style="margin-left: 50%; margin-top: 10px;">Logout</button>
+            <div id="massag" class="mass" style="margin-right: -50px;">massage</div>
+            <div id="ticket" class="mass" style="visibility: hidden; margin-right: 100px;">ticket</div>
+        </div>
+        <div style="height: 500px; background-color: rgb(252, 244, 235);">content
+           
+        </div>
+        <div style="height:60px; width: 100%; "><h2 id="click" class="text" style="color: blue;">feedback</h2></div>
+    </div>
+
+    <div class="login" id="login1" >
+        admin@gmail.com, password-"admin@123"
+        cost1@gmail.com, cost1@123
+        <h1 style="text-align: center;">Login</h1>
+        
+            <label for="">UserID</label>
+            <input type="email" required style="margin-left: 13px;" id="userId"/><br><br>
+            <label for="">Password</label>
+            <input type="password" required  id="password" ><br><br>
+            <center><button onclick="logn()">Login</button></center>
+            <button id="new" onclick="newAdd()" >add new costomer ?</button>
+    
+    </div>
+
+    <div class="login" id="sinup" style="visibility:hidden;" >
+        <h1 style="text-align: center;">New Costomer</h1>
+        <form action="">
+            <label for="">UserID</label>
+            <input type="email" required style="margin-left: 13px;"/><br><br>
+            <label for="">Password</label>
+            <input type="password" required><br><br>
+            <center><button>creat</button></center>
+        </form>
+    </div>
+
+    <script>
+
+        
+        let UserID;
+    let password; 
+    let log;
+    let sin;
+    let main;
+    let masag;
+    let tiket;
+    let fedbak;
+    log=document.getElementById("login1").style;
+    sin=document.getElementById("sinup").style;
+    main=document.getElementById("main").style;
+    masag=document.getElementById("massag");
+    tiket=document.getElementById("ticket");
+    fedbak=document.getElementById("click");
+    
+    masag.addEventListener('click',function(){window.location.href="Massage.html"});
+    tiket.addEventListener('click',function(){window.location.href="token.html"})
+    fedbak.addEventListener("click",function(){window.location.href="frrdback.html"}) 
+    
+    
+    //data.....
+    const arr=[{x:"cost1@gmail.com",y:"cost1@123"},
+               {x:"cost2@gmail.com",y:"cost2@123"},
+               {x:"cost3@gmail.com",y:"cost3@123"},
+               {x:"cost4@gmail.com",y:"cost4@123"}]
+    
+    // let hash=new Map();
+    // hash.set("cost1@gmail.com",{i:12345,c:"quary",d:"12", m:"dsdfgf dfgdf",});
+    // hash.set("cost2@gmail.com",{i:12344,c:"quary",d:"12", m:"dsdfgf dfgdf",});
+    // hash.set("cost3@gmail.com",{i:12335,c:"quary",d:"12", m:"dsdfgf dfgdf",});
+    // hash.set("cost4@gmail.com",{i:12545,c:"quary",d:"12", m:"dsdfgf dfgdf",});
+    // hash.set("cost5@gmail.com",{i:12645,c:"quary",d:"12", m:"dsdfgf dfgdf",});
+    // let hash=new Map();
+    // hash.set("cost1@gmail.com",{i:12345,c:"quary",d:"12", m:"dsdfgf dfgdf",r:''});
+    // hash.set("cost2@gmail.com",{i:12344,c:"quary",d:"12", m:"dsdfgf dfgdf",r:''});
+    // hash.set("cost3@gmail.com",{i:12335,c:"quary",d:"12", m:"dsdfgf dfgdf",r:''});
+    // hash.set("cost4@gmail.com",{i:12545,c:"quary",d:"12", m:"dsdfgf dfgdf",r:''});
+    // hash.set("cost5@gmail.com",{i:12645,c:"quary",d:"12", m:"dsdfgf dfgdf",r:''});
+    
+   
+  
+
+if(! localStorage.getItem('u')){
+    localStorage.setItem('u',null)
+    localStorage.setItem('p',null)
+}
+
+    UserID = localStorage.getItem('u');
+    password = localStorage.getItem('p');
+
+
+    
+    if(UserID!==null){
+        
+        if(UserID==="admin@gmail.com" && password==="admin@123"){
+              log.display="none";
+              sin.display="none";
+              main.filter="blur(0px)"
+              masag.style.display="block";
+              tiket.style.display="block"
+              tiket.style.visibility="visible"  
+              localStorage.setItem('u',UserID);
+              localStorage.setItem('p',password);
+    
+          }else {
+             arr.forEach(element => {
+                 if(element.x===UserID && element.y===password){
+                     log.display="none";
+                     //sin.display="none";
+                     main.filter="blur(0px)"
+                     masag.display="block";
+                     tiket.display="none"
+                     localStorage.setItem('u',UserID);
+                     localStorage.setItem('p',password);
+                     
+                 }else{
+    
+                 }
+    
+          });
+          }
+    }
+    
+     function logn(){
+         UserID=document.getElementById("userId").value;
+         password=document.getElementById("password").value;
+        // log=document.getElementById("login1").style;
+        // sin=document.getElementById("sinup").style;
+        
+           //log.display="none";
+             //sin.display="none";
+          if(UserID==="admin@gmail.com" && password==="admin@123"){
+              log.display="none";
+              sin.display="none";
+              main.filter="blur(0px)"
+              masag.style.display="none";
+              tiket.style.display="block"
+              tiket.style.visibility="visible"  
+              localStorage.setItem('u',UserID);
+              localStorage.setItem('p',password);
+    
+          }else {
+             arr.forEach(element => {
+                 if(element.x===UserID && element.y===password){
+                     log.display="none";
+                     //sin.display="none";
+                     main.filter="blur(0px)"
+                     masag.display="block";
+                     tiket.display="none"
+                     localStorage.setItem('u',UserID);
+                     localStorage.setItem('p',password);
+                     
+                 }else{
+    
+                 }
+    
+          });
+          }
+     }
+     function newAdd(){  
+             log.display="none";
+             sin.display="block";
+             sin.visibility="visible"
+          }
+    
+    function logout(){
+        localStorage.clear();
+        location.reload();
+    }
+    
+    </script>
+    
+</body>
+
+
+</html>
