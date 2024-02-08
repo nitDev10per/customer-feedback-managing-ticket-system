@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="backM()">back</button>
+    <center> 
+        <p class="" style="font-family: fantasy;">Creat Ticket</p>
+    <div class="costom" style="padding: 10px; text-align: left;">
+    <form action="">
+        <label for="">Catagory :</label>
+        <select name="catagory" id="catagory" >
+           <option value="complaints">complaints</option>
+           <option value="Suggestion">Suggestion</option>
+           <option value="Inquiries">Inquiries</option>
+        </select>
+        <br><br>
+        <label for="">Massage :</label>
+        <textarea name="massage" id="msg" cols="30" rows="1"></textarea>
+        <br><br>
+        <button onclick="submt()">Submit</button>
+        <!-- <input type="submit" name="" id="">    -->
+    </form>
+</div>
+</center>
+<!-- <script src="script.js"></script> -->
+</body>
+<script>
+
+// Retrieve user-specific data from localStorage
+let UserI = localStorage.getItem('u');
+
+if(!sessionStorage.getItem('myMapData')){
+    let myMap = new Map();
+       
+        let mapJso = JSON.stringify(Array.from(myMap.entries()));
+
+        // Store JSON string in sessionStorage
+        sessionStorage.setItem('myMapData', mapJso);
+   // sessionStorage.getItem('myMapData')
+}
+// Initialize the Map with user-specific data
+let mapJson = sessionStorage.getItem('myMapData');
+
+// Parse JSON string into an array of key-value pairs
+let mapArray = JSON.parse(mapJson);
+
+// Create a Map from the array
+let hash = new Map(mapArray);
+
+
+//let hash = new Map();
+hash.set("cost1@gmail.com", [{ i: 12345, c: "Inquary", d: "12", m: "please forgive me if there is any mistake", r: '',l:0 }]);
+
+// // function submt() {
+//     let catagory;
+//     let msg;
+//     let date;
+//     let id;
+//     catagory = document.getElementById("catagory").value;
+//     msg = document.getElementById("msg").value;
+//     date = new Date();
+//     id = Math.floor(Math.random() * 6) * 10000;
+
+//     if (hash.get(UserI) !== null) {
+//         const arrr = hash.get(UserI);
+//         arrr.push({ i: id, c: catagory, d: date, m: msg, r: '' });
+//         hash.set(UserI, arrr);
+//     } else {
+//         hash.set(UserI, [{ i: id, c: catagory, d: date, m: msg, r: '' }]);
+//     }
+
+//     // Convert Map to JSON string and store in sessionStorage
+//     let mapJson = JSON.stringify(Array.from(hash.entries()));
+//     sessionStorage.setItem('myMapData', mapJson);
+
+//     // Redirect to Massage.html
+//     window.location.href = "Massage.html";
+
+//     // Display Map data (for testing purposes)
+//     window.alert(hash.get(UserI).toString());
+// }
+
+function submt() {
+    let catagory;
+    let msg;
+    let date;
+    let id;
+    catagory = document.getElementById("catagory").value;
+    msg = document.getElementById("msg").value;
+    date = new Date();
+    id = Math.floor(Math.random() * 6) * 10000;
+
+    // Ensure UserI key exists in the hash map
+    if (!hash.has(UserI)) {
+        hash.set(UserI, []);
+    }
+
+    // Retrieve the array associated with the UserI key
+    const arrr = hash.get(UserI);
+
+    // Push the new data into the array
+    arrr.push({ i: id, c: catagory, d: date, m: msg, r: '',l:arrr.length});
+
+    // Update the hash map with the modified array
+    hash.set(UserI, arrr);
+
+    // Convert Map to JSON string and store in sessionStorage
+    mapJson = JSON.stringify(Array.from(hash.entries()));
+    sessionStorage.setItem('myMapData', mapJson);
+
+    // Redirect to Massage.html
+    window.location.href = "Massage.html";
+
+    // Display Map data (for testing purposes)
+   // window.alert(hash.get(UserI).toString());
+}
+
+
+function backM() {
+    window.location.href = "index.html";
+}
+
+</script>
+</html>
