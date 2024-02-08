@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <!-- <script src="script.js"></script> -->
+    <title>Ticket Management System</title>
+</head>
+<body>
+    <button onclick="backMain()" >back</button>
+    <center>
+        <div>
+            <div id="detail" class="costom" style="height: 500px; width: 500px; position: fixed; display: none;">
+                <table id="tbl1">
+                    <tr>
+                        <th></th>
+                        <th>Ticket_Id</th>
+                        <th>Email</th>
+                        <th>Category</th>
+                        <th>Time</th>
+                    </tr>
+                </table>
+                <h4>Message</h4>
+                <div class="costom" style="width: 90%;">
+                    <p id="showMessage">message</p>
+                </div>
+                <br>
+                <div>
+                    <h4>Response</h4>
+                    <textarea id="response" cols="60" rows="4"></textarea>
+                    <button onclick="sendResponse()">Next</button>
+                </div>
+            </div>
+
+            <p class="" style="font-family: fantasy;">All Tickets</p>
+            <div id="ticket" class="costom" style="height: max-content;">
+                <table id="tbl2">
+                    <tr>
+                        <th></th>
+                        <th>Ticket_Id</th>
+                        <th>Email</th>
+                        <th>Category</th>
+                        <th>Time</th>
+                        <th>Click</th>
+                    </tr>
+                   
+                    <!-- Add more rows as needed -->
+                </table>
+            </div>
+        </div>
+    </center>
+  
+</body>
+<script>
+
+let tab1;
+let tab2;
+let response;
+tab1 = document.getElementById("tbl1");
+tab2 = document.getElementById("tbl2");
+var rows = tab2.getElementsByTagName('tr');
+let detail = document.getElementById("detail");
+let showMessage = document.getElementById('showMessage');
+response = document.getElementById('response');
+let ticket=document.getElementById('ticket');
+
+
+
+// Retrieving data in another HTML file
+// let hash = localStorage.getItem('map');
+
+// console.log(hash);
+
+
+//data...
+
+let mapJson = sessionStorage.getItem('myMapData');
+
+// Parse JSON string into an array of key-value pairs
+let mapArray = JSON.parse(mapJson);
+
+// Create a Map from the array
+let hash = new Map(mapArray);
+// let hash=new Map();
+// hash.set("cost1@gmail.com",{i:12345,c:"quary",d:"12", m:"dsdfgf dfgdf",r:''});
+// hash.set("cost2@gmail.com",{i:12344,c:"quary",d:"12", m:"dsdfgf dfgdf",r:''});
+// hash.set("cost3@gmail.com",{i:12335,c:"quary",d:"12", m:"dsdfgf dfgdf",r:''});
+// hash.set("cost4@gmail.com",{i:12545,c:"quary",d:"12", m:"dsdfgf dfgdf",r:''});
+// hash.set("cost5@gmail.com",{i:12645,c:"quary",d:"12", m:"dsdfgf dfgdf",r:''});
+
+
+//.....
+
+
+// for (const [key, Value] of hash) {
+//     for(const value of Value){
+//     let row2 = tab2.insertRow(1);
+//     let cell1 = row2.insertCell(0);
+//     let cell2 = row2.insertCell(1);
+//     let cell3 = row2.insertCell(2);
+//     let cell4 = row2.insertCell(3);
+//     let cell5 = row2.insertCell(4);
+//     let cell6 = row2.insertCell(5);
+//     let input = document.createElement("input");
+//     input.type = "checkbox";
+
+//     let button = document.createElement("button");
+//     button.innerHTML = "View";
+//     button.onclick = function () {
+//         let rowIndex = this.parentNode.parentNode.rowIndex;
+//         // Call the view function with the rowIndex
+//         viewTicket(rowIndex);
+//     };
+
+//     cell1.appendChild(input);
+//     cell2.innerHTML = value.i;
+//     cell3.innerHTML = key;
+//     cell4.innerHTML = value.c;
+//     cell5.innerHTML = value.d;
+//     cell6.appendChild(button);
+//     // cell2.innerHTML=value.c;
+// }
+// }
+
+for (const [key, valueArray] of hash) {
+    for (const value of valueArray) {
+        let row2 = tab2.insertRow(1);
+        let cell1 = row2.insertCell(0);
+        let cell2 = row2.insertCell(1);
+        let cell3 = row2.insertCell(2);
+        let cell4 = row2.insertCell(3);
+        let cell5 = row2.insertCell(4);
+        let cell6 = row2.insertCell(5);
+        let cell7 = row2.insertCell(6)
+        let input = document.createElement("input");
+        input.type = "checkbox";
+
+        let button = document.createElement("button");
+        button.innerHTML = "View";
+        button.onclick = function () {
+            let rowIndex = this.parentNode.parentNode.rowIndex;
+            // Call the view function with the rowIndex
+            viewTicket(rowIndex);
+        };
+
+        let butto = document.createElement("button");
+        butto.innerHTML = "Delete";
+        butto.onclick = function () {
+            let rowIndex = this.parentNode.parentNode.rowIndex;
+            var table = this.parentNode.parentNode.parentNode;
+            // Call the view function with the rowIndex
+            deleteRow(rowIndex,table);
+        };
+
+        cell1.appendChild(input);
+        cell2.innerHTML = value.i;
+        cell3.innerHTML = key;
+        cell4.innerHTML = value.c;
+        cell5.innerHTML = value.d;
+        cell6.appendChild(button);
+        cell7.appendChild(butto);
+    }
+}
+
+function deleteRow(rowIndex,table){
+    table.deleteRow(rowIndex);
+}
+
+let currentKey1;
+let currentValue;
+let index;
+// function viewTicket(rowIndex) {
+//     currentKey = rows[rowIndex].getElementsByTagName('td')[2].innerText;
+//     detail.style.display = "block";
+//     let A=hash.get(currentKey);
+//     let index = A.findIndex(obj => obj.name === rows[rowIndex].getElementsByTagName('td')[1].innerText);
+
+//     currentValue = A[index];
+//     let row1 = tab1.insertRow(1);
+//     let cell1 = row1.insertCell(0);
+//     let cell2 = row1.insertCell(1);
+//     let cell3 = row1.insertCell(2);
+//     let cell4 = row1.insertCell(3);
+//     let cell5 = row1.insertCell(4);
+//     let input = document.createElement("input");
+//     input.type = "checkbox";
+
+//     cell1.appendChild(input);
+//     cell2.innerHTML = rows[rowIndex].getElementsByTagName('td')[1].innerText;
+//     cell3.innerHTML = currentKey;
+//     cell4.innerHTML = rows[rowIndex].getElementsByTagName('td')[3].innerText;
+//     cell5.innerHTML = rows[rowIndex].getElementsByTagName('td')[4].innerText;
+//     showMessage.innerText = currentValue.m;
+//     response.value = currentValue.r;
+//     ticket.style.display="none";
+// }
+
+// function viewTicket(rowIndex) {
+//     let currentKey;
+//     currentKey = rows[rowIndex].getElementsByTagName('td')[2].innerText;
+//     currentKey1=currentKey;
+//     detail.style.display = "block";
+
+//     let A = hash.get(currentKey);
+//     let index = A.findIndex(obj => obj.i === parseInt(rows[rowIndex].getElementsByTagName('td')[1].innerText));
+
+//     // Check if the index is valid
+//     if (index !== -1) {
+//         currentValue = A[index];
+
+//         let row1 = tab1.insertRow(1);
+//         let cell1 = row1.insertCell(0);
+//         let cell2 = row1.insertCell(1);
+//         let cell3 = row1.insertCell(2);
+//         let cell4 = row1.insertCell(3);
+//         let cell5 = row1.insertCell(4);
+//         let input = document.createElement("input");
+//         input.type = "checkbox";
+
+//         cell1.appendChild(input);
+//         cell2.innerHTML = rows[rowIndex].getElementsByTagName('td')[1].innerText;
+//         cell3.innerHTML = currentKey;
+//         cell4.innerHTML = rows[rowIndex].getElementsByTagName('td')[3].innerText;
+//         cell5.innerHTML = rows[rowIndex].getElementsByTagName('td')[4].innerText;
+
+//         // Access properties of the individual object within the array
+//         showMessage.innerText = currentValue.m;
+//         response.value = currentValue.r;
+//         ticket.style.display = "none";
+//     } else {
+//         console.error("Object not found in the array.");
+//     }
+// }
+
+function viewTicket(rowIndex) {
+    let currentKey = rows[rowIndex].getElementsByTagName('td')[2].innerText;
+    currentKey1 = currentKey;
+    detail.style.display = "block";
+
+    // Access the array directly using the key
+    let A = hash.get(currentKey);
+
+    // Check if the array exists
+    if (A) {
+         index = A.findIndex(obj => obj.i === parseInt(rows[rowIndex].getElementsByTagName('td')[1].innerText));
+
+        // Check if the index is valid
+        if (index !== -1) {
+            currentValue = A[index];
+
+            let row1 = tab1.insertRow(1);
+            let cell1 = row1.insertCell(0);
+            let cell2 = row1.insertCell(1);
+            let cell3 = row1.insertCell(2);
+            let cell4 = row1.insertCell(3);
+            let cell5 = row1.insertCell(4);
+            let input = document.createElement("input");
+            input.type = "checkbox";
+
+            cell1.appendChild(input);
+            cell2.innerHTML = rows[rowIndex].getElementsByTagName('td')[1].innerText;
+            cell3.innerHTML = currentKey;
+            cell4.innerHTML = rows[rowIndex].getElementsByTagName('td')[3].innerText;
+            cell5.innerHTML = rows[rowIndex].getElementsByTagName('td')[4].innerText;
+
+            showMessage.innerText = currentValue.m;
+            response.value = currentValue.r;
+            ticket.style.display = "none";
+        } else {
+            console.error("Object not found in the array.");
+        }
+    } else {
+        console.error("Array not found in the Map for the key:", currentKey);
+    }
+}
+
+function sendResponse() {
+
+    let arrr=hash.get(currentKey1);
+    arrr[index]={
+         i: currentValue.i,
+        c: currentValue.c,
+        d: currentValue.d,
+        m: currentValue.m,
+        r: response.value
+    };
+
+    hash.set(currentKey1,arrr);
+
+    // hash.set(currentKey1, {
+    //     i: currentValue.i,
+    //     c: currentValue.c,
+    //     d: currentValue.d,
+    //     m: currentValue.m,
+    //     r: response.value
+    // });
+
+    mapJson = JSON.stringify(Array.from(hash.entries()));
+
+// Store JSON string in sessionStorage
+    sessionStorage.setItem('myMapData', mapJson);
+
+    detail.style.display = "none";
+    response.value = "";
+    currentKey1 = null;
+    currentValue = null;
+    tab1.deleteRow(1);
+    ticket.style.display="block"
+    index=null;
+}
+
+function backMain(){
+    window.location.href="index.html"
+}
+
+
+   </script>
+</html>
